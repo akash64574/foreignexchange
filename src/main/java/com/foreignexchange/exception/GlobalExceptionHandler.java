@@ -12,8 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.foreignexchange.constant.AppConstant;
+import com.foreignexchange.dto.ResponseDto;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -38,5 +42,37 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 		body.put("errors", errors);
 		return new ResponseEntity<>(body, headers, HttpStatus.OK);
+	}
+
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ResponseDto> userNotFoundException(UserNotFoundException ex) {
+		ResponseDto errorDto = new ResponseDto();
+		errorDto.setMessage(AppConstant.USER_NOT_FOUND);
+		errorDto.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
+	}
+	
+	@ExceptionHandler(ExchangeRateNotFoundException.class)
+	public ResponseEntity<ResponseDto> exrateNotFoundException(ExchangeRateNotFoundException ex) {
+		ResponseDto errorDto = new ResponseDto();
+		errorDto.setMessage(AppConstant.EXRATE_NOT_FOUND);
+		errorDto.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
+	}
+	
+	@ExceptionHandler(UserAccountNotFoundException.class)
+	public ResponseEntity<ResponseDto> userAccountNotFoundException(UserAccountNotFoundException ex) {
+		ResponseDto errorDto = new ResponseDto();
+		errorDto.setMessage(AppConstant.USER_ACCOUNT_NOT_FOUND);
+		errorDto.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
+	}
+	
+	@ExceptionHandler(CurrencyNotFoundException.class)
+	public ResponseEntity<ResponseDto> currencyNotFoundException(CurrencyNotFoundException ex) {
+		ResponseDto errorDto = new ResponseDto();
+		errorDto.setMessage(AppConstant.CURRENCY_NOT_FOUND);
+		errorDto.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
 	}
 }

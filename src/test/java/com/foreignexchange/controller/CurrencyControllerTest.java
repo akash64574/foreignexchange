@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
 import com.foreignexchange.dto.CurrencyExrateDto;
+import com.foreignexchange.exception.CurrencyNotFoundException;
 import com.foreignexchange.exception.ExchangeRateNotFoundException;
 import com.foreignexchange.service.CurrencyService;
 
@@ -28,12 +29,12 @@ public class CurrencyControllerTest {
 
 	@Before
 	public void init() {
-		currencyExrateDto.setExrateRate(51.00);
+		currencyExrateDto.setExchangeRate(51.00);
 		currencyExrateDto.setStatusCode(200);
 	}
 
 	@Test
-	public void testGetExrateRateByCurrencyCode() throws ExchangeRateNotFoundException {
+	public void testGetExrateRateByCurrencyCode() throws ExchangeRateNotFoundException, CurrencyNotFoundException {
 		//Given
 		when(currencyService.getExrateRateByCurrencyCode("SGD")).thenReturn(currencyExrateDto);
 		//When

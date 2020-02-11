@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.foreignexchange.constant.AppConstant;
 import com.foreignexchange.dto.CurrencyExrateDto;
+import com.foreignexchange.exception.CurrencyNotFoundException;
 import com.foreignexchange.exception.ExchangeRateNotFoundException;
 import com.foreignexchange.service.CurrencyService;
 
@@ -43,10 +44,11 @@ public class CurrencyController {
 	 * @throws ExchangeRateNotFoundException - If throws this exception when no data
 	 *                                       found for exchange rate from external
 	 *                                       api call.
+	 * @throws CurrencyNotFoundException
 	 */
 	@GetMapping("{currencyCode}")
 	public ResponseEntity<CurrencyExrateDto> getExrateRateByCurrencyCode(@PathVariable String currencyCode)
-			throws ExchangeRateNotFoundException {
+			throws ExchangeRateNotFoundException, CurrencyNotFoundException {
 		log.info("getting the exrate rate based on the currency code...");
 		CurrencyExrateDto response = currencyService.getExrateRateByCurrencyCode(currencyCode);
 		response.setStatusCode(HttpStatus.OK.value());
