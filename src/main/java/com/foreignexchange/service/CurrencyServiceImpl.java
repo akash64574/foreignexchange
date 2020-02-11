@@ -13,6 +13,8 @@ import org.springframework.web.client.RestTemplate;
 import com.foreignexchange.constant.AppConstant;
 import com.foreignexchange.dto.CurrencyExrateDto;
 import com.foreignexchange.dto.ExrateRateDto;
+import com.foreignexchange.entity.Currency;
+import com.foreignexchange.exception.CurrencyNotFoundException;
 import com.foreignexchange.exception.ExchangeRateNotFoundException;
 import com.foreignexchange.repository.CurrencyRepository;
 
@@ -43,11 +45,18 @@ public class CurrencyServiceImpl implements CurrencyService {
 	 * @throws ExchangeRateNotFoundException - If throws this exception when no data
 	 *                                       found for exchange rate from external
 	 *                                       api call.
+	 * @throws CurrencyNotFoundException 
 	 */
 	@Override
-	public CurrencyExrateDto getExrateRateByCurrencyCode(String currencyCode) throws ExchangeRateNotFoundException {
+	public CurrencyExrateDto getExrateRateByCurrencyCode(String currencyCode) throws ExchangeRateNotFoundException, CurrencyNotFoundException {
 		log.info("getting the exrate rate based on the currency code...");
 
+		// Check the currency Code is present or not.
+		Optional<Currency> user = currencyRepository.findById(currencyCode);
+		if (!user.isPresent()) {
+			log.error("Error Occured in transferAmount for user not found...");
+			throw new CurrencyNotFoundException(AppConstant.USER_NOT_FOUND);
+		}
 		CurrencyExrateDto currencyExrateDto = new CurrencyExrateDto();
 		String url = AppConstant.EXRATE_RATE_URL.concat(currencyCode);
 
@@ -67,7 +76,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 		} else {
 			DecimalFormat df2 = new DecimalFormat(AppConstant.EXRATE_DECIMAL_FORMAT);
 			df2.setRoundingMode(RoundingMode.UP);
-			currencyExrateDto.setExrateRate(Double.valueOf(df2.format(value.get().getValue())));
+			currencyExrateDto.setExchangeRate(Double.valueOf(df2.format(value.get().getValue())));
 		}
 		log.info("return the exchange rate based on the currency code...");
 		return currencyExrateDto;

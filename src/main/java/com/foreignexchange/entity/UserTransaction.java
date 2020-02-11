@@ -43,6 +43,7 @@ public class UserTransaction {
 	private Double amount;
 	private Double remitChange;
 	private Double transferAmount;
+	private Double toAccountAmount;
 	@Enumerated(EnumType.STRING)
 	private TransferStatus status;
 }

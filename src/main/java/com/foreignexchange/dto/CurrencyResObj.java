@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CurrencyExrateDto extends ResponseDto {
+public class CurrencyResObj {
+	private String currencyCode;
+	private String currencyName;
 
-	private Double exchangeRate;
-	
 }

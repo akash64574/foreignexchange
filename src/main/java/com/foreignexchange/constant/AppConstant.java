@@ -37,4 +37,5 @@ public class AppConstant {
 	public static final String EXRATE_NOT_FOUND = "Exchange Rate not found";
 	public static final String EXRATE_DECIMAL_FORMAT = "#.##";
 	public static final String INR_CURRENCY_CODE = "INR";
+	public static final String CURRENCY_NOT_FOUND = "Currency not found";
 }
