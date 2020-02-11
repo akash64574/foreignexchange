@@ -31,5 +31,10 @@ public class AppConstant {
 	public static final String TRANSFER_AMOUNT_SHOULD_NOT_LESS_1 = "transferAmount can't be less than 1";
 	public static final String REMIT_CHARGES_SHOULD_NOT_LESS_1 = "remitChanges can't be less than 1";
 	public static final String TOTAL_AMOUNT_SHOULD_NOT_LESS_1 = "totalAmount can't be less than 1";
+	
 
+	public static final String EXRATE_RATE_URL = "https://api.exchangeratesapi.io/latest?base=";
+	public static final String EXRATE_NOT_FOUND = "Exchange Rate not found";
+	public static final String EXRATE_DECIMAL_FORMAT = "#.##";
+	public static final String INR_CURRENCY_CODE = "INR";
 }

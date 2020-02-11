@@ -17,6 +17,16 @@ import com.foreignexchange.repository.UserTransactionRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Pending Transfer Transaction details by Schedular Job - To Run the Schedular
+ * job to completed the pending transaction from transactions.
+ * 
+ * @author Govindasamy.C
+ * @since 14-02-2020
+ * @version V1.1
+ * 
+ *
+ */
 @Configuration
 @EnableScheduling
 @Slf4j
@@ -29,6 +39,9 @@ public class PendingTransferTransactionForSchedularJob {
 	@Autowired
 	UserAccountRepository userAccountRepository;
 
+	/**
+	 * @author Govindasamy.C
+	 */
 	@Scheduled(cron = "0 0/1 * * * *")
 	public void executeTask() {
 		log.info("pending transfer transaction cron executed.........");
@@ -55,6 +68,11 @@ public class PendingTransferTransactionForSchedularJob {
 				Double afterDebitAmount = fromUserAccount.getAvailableBalance() - userTransaction.getTransferAmount();
 				fromUserAccount.setAvailableBalance(afterDebitAmount);
 				userAccountRepository.save(fromUserAccount);
+
+				UserAccount toUserAccount = userTransaction.getToUserAccount();
+				Double afterCreditAmount = toUserAccount.getAvailableBalance() + userTransaction.getAmount();
+				toUserAccount.setAvailableBalance(afterCreditAmount);
+				userAccountRepository.save(toUserAccount);
 
 				userTransaction.setStatus(TransferStatus.TRANSFERED);
 				userTransactionRepository.save(userTransaction);
